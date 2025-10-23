@@ -41,9 +41,12 @@ func main() {
 	// Endpoint de estado
 	http.HandleFunc("/api/status", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
+		mu.Lock()
+		totalMensajes := len(mensajes)
+		mu.Unlock()
 		json.NewEncoder(w).Encode(map[string]interface{}{
 			"status":           "online",
-			"mensajes_totales": len(mensajes),
+			"mensajes_totales": totalMensajes,
 			"timestamp":        time.Now(),
 		})
 	})
